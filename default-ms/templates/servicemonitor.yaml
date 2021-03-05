@@ -1,0 +1,19 @@
+{{- if .Values.servicemonitor.enabled -}}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "default-ms.fullname" . }}
+  labels:
+    {{- include "default-ms.labels" . | nindent 4 }}
+    release: prometheus
+spec:
+  endpoints:
+    - port: {{ .Values.servicemonitor.port }}
+      path: {{ .Values.servicemonitor.path }}
+  selector:
+    matchLabels:
+       {{- include "default-ms.selectorLabels" . | nindent 6 }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}    
+{{- end}}      

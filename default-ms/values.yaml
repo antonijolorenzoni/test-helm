@@ -1,0 +1,85 @@
+# Default values for default-ms.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+fullnameOverride: "test-sb"
+
+replicaCount: 1
+
+image:
+  repository: 719050567373.dkr.ecr.eu-west-1.amazonaws.com/test-devops
+  pullPolicy: IfNotPresent
+  tag: 0.0.1-snapshot
+
+#imagePullSecrets: 
+#  - name: nexus-login
+
+pod:
+  httpPort: 10000
+  metricPort: 10010
+  metricLivenessPath: /actuator/health/liveness
+  metricReadinessPath: /actuator/health/readiness
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+  metricport: 8080
+
+
+servicemonitor:
+  enabled: false
+  port: monitor
+  path: /actuator/prometheus
+
+ingress:
+  enabled: true
+  annotations: 
+    kubernetes.io/ingress.class: kong
+    konghq.com/strip-path: "true"
+  hosts:
+    - host: 
+      paths: 
+        - "/mysb"
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+#  requests:
+#    memory: "500Mi"
+#    cpu: "250m"
+#  limits:
+#    memory: "1Gi"
+#    cpu: "500m"
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
