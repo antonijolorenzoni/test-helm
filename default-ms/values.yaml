@@ -8,7 +8,7 @@ replicaCount: 1
 
 image:
   repository: 719050567373.dkr.ecr.eu-west-1.amazonaws.com/test-devops
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   tag: 0.0.1-snapshot
 
 #imagePullSecrets: 
